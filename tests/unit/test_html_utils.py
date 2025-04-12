@@ -5,9 +5,6 @@
 
 
 
-
-
-
 # unit test for functions: to_heading_line, to_text_paragraph
 
 def test_to_heading_line_2():
