@@ -115,7 +115,6 @@ def test_to_text_paragraph_char():
     assert text == expected
 
 # Unit tests for functions: to_error_message, to_basic_html_page (Tester: Shaheera)
-
 # Test Case: to_error_message should format an error page using to_basic_html_page
 # This is an equivalence class test for checking the function with valid input
 @patch("html_utils.to_basic_html_page", return_value="<html>Error Page</html>")
