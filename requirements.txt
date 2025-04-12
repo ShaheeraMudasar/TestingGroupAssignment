@@ -1,6 +1,6 @@
 gunicorn
 flask
-psycopg2-binary
+psycopg2
 pytest
 pytest-cov
 pytest-randomly
