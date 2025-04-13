@@ -1,7 +1,3 @@
-# TestCase: add_visit should save a visit's detail in database using mock data 
-# and return with the visit info on homepage without errror
-# 
-
 import db
 from db import get_db_connection, init_db, add_visit, get_all_visits, get_visit_by_id, format_visit_history
 from datetime import datetime
