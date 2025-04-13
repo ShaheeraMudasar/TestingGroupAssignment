@@ -3,10 +3,6 @@ from db import get_visit_by_id, add_visit, get_all_visits, init_db, format_visit
 from rendering import format_visit_details, format_welcome_message, format_hello_greeting
 from html_utils import to_error_message
 from datetime import datetime
-import sys
-import os
-# Add the root directory of your project to sys.path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
 app = Flask(__name__)
 
