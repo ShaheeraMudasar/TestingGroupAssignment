@@ -1,14 +1,81 @@
-# Unit tests for functions: get_html_start_block, get_html_end_block
+from html_utils import to_basic_html_page, to_error_message, get_html_start_block, get_html_end_block, to_heading_line, to_text_paragraph
+import pytest
+from unittest.mock import patch
+from hamcrest import assert_that, equal_to
 
+# Unit tests for functions: get_html_start_block, get_html_end_block (Tester: Mehdi)
 
+# (1) get_html_start_block:
 
+# # Test Case: get_html_start_block should return a correct HTML start block
+# This is an equivalence class test for checking the function with valid input
 
+@patch("html_utils.get_html_start_block", return_value="<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><title>Page</title></head>\n<body>\n")
+def test_get_html_start_block(mock_get_html_start):
+    # Given a valid HTML start block
+    # When get_html_start_block is called
+    start_block = get_html_start_block()    
+    # Then the returned HTML should match the expected HTML start block
+    expected_output = "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><title>Page</title></head>\n<body>\n"
+    assert_that(start_block, equal_to(expected_output))
 
+# Boundary Test Case: get_html_start_block should still return a valid start block even when input is empty
+# This checks if the function handles empty input (Boundary Test).
+@patch("html_utils.get_html_start_block", return_value="<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><title>Page</title></head>\n<body>\n")
+def test_get_html_start_block_empty(mock_get_html_start):
+    # Given an empty title for the HTML start block
+    # When get_html_start_block is called
+    start_block = get_html_start_block()
+    # Then the returned HTML should contain a title tag with empty content
+    expected_output = "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><title>Page</title></head>\n<body>\n"
+    assert_that(start_block, equal_to(expected_output))
 
+# Edge Test Case: get_html_start_block should still return a valid start block even when input is None
+# This  checks if the function  handles `None` input (Edge Case).
+@patch("html_utils.get_html_start_block", return_value="<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><title>Page</title></head>\n<body>\n")
+def test_get_html_start_block_none(mock_get_html_start):
+    # Given `None` as the title for the HTML start block
+    # When get_html_start_block is called
+    start_block = get_html_start_block()
+    # Then the returned HTML should contain `None` as the title
+    expected_output = "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><title>Page</title></head>\n<body>\n"
+    assert_that(start_block, equal_to(expected_output))
 
+# (2) get_html_end_block:
 
+# Test Case: get_html_end_block should return a correct HTML end block
+# This is an equivalence class test for checking the function with valid input
+@patch("html_utils.get_html_end_block", return_value="</body>\n</html>\n")
+def test_get_html_end_block(mock_get_html_end):
+    # Given a valid HTML end block
+    # When get_html_end_block is called
+    end_block = get_html_end_block()
+    # Then the returned HTML should match the expected HTML end block
+    expected_output = "</body>\n</html>\n"
+    assert_that(end_block, equal_to(expected_output))
 
-# Unit tests for functions: to_heading_line, to_text_paragraph
+# Boundary Test Case: get_html_end_block should still return a valid end block even with empty content
+# This checks if the function handles empty input (Boundary Test).
+@patch("html_utils.get_html_end_block", return_value="</body>\n</html>\n")
+def test_get_html_end_block_empty(mock_get_html_end):
+    # Given an empty body for the HTML end block
+    # When get_html_end_block is called
+    end_block = get_html_end_block()
+    # Then the returned HTML should still be a valid closing HTML tag
+    expected_output = "</body>\n</html>\n"
+    assert_that(end_block, equal_to(expected_output))
+
+# Edge Test Case: get_html_end_block shoudl still return a valid end block even when input is None
+# This checks if the function handles `None` input (Edge Case).
+@patch("html_utils.get_html_end_block", return_value="</body>\n</html>\n")
+def test_get_html_end_block_none(mock_get_html_end):
+    # Given `None` as the content for the HTML end block
+    # When get_html_end_block is called
+    end_block = get_html_end_block()
+    # Then the returned HTML should be a valid closing HTML tag
+    expected_output = "</body>\n</html>\n"
+    assert_that(end_block, equal_to(expected_output))
+ # Unit tests for functions: to_heading_line, to_text_paragraph
 
 def test_to_heading_line_2():
     heading = to_heading_line("Hello", 2)
