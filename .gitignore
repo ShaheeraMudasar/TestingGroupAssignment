@@ -19,7 +19,6 @@ coverage.xml
 htmlcov/
 
 
-
 # Test result logs
 *.log
 
