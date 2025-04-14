@@ -18,8 +18,6 @@ env/
 coverage.xml
 htmlcov/
 
-#Detelina test file
-tests/learning_tests
 
 # Test result logs
 *.log
