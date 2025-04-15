@@ -1,6 +1,4 @@
-from unittest.mock import patch
-from html_utils import get_html_start_block, to_heading_line, to_text_paragraph, get_html_end_block
-from rendering import format_visit_details
+
 
 
 
