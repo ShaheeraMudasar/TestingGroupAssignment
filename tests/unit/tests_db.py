@@ -1,7 +1,8 @@
-from db import add_visit
+from db import get_visit_by_id, get_all_visits, add_visit
 from unittest.mock import patch, MagicMock
 from hamcrest import assert_that, equal_to
 from datetime import datetime
+
 
 # Unit tests for functions: add_visit (Tester: Mehdi)
 
@@ -51,8 +52,37 @@ def test_add_visit_handles_db_exception(mock_connect):
 
 # Unit tests for functions: get_all_visits (Tester: Detelina)
 
+@patch("db.psycopg2.connect")
+def test_get_all_visits_returns_data(mock_connect):
+    mock_conn = MagicMock()
+    mock_cursor = MagicMock()
 
+    mock_connect.return_value = mock_conn
+    mock_conn.cursor.return_value = mock_cursor
 
+    mock_cursor.fetchall.return_value = [
+        (1, "2025-01-01 12:00:00", "127.0.0.1", "Mozilla")
+    ]
+
+    result = get_all_visits()
+
+    assert result == [
+        {"id": 1, "timestamp": "2025-01-01 12:00:00", "ip": "127.0.0.1", "user_agent": "Mozilla"}
+    ]
+
+@patch("db.psycopg2.connect")
+def test_get_all_visits_returns_empty(mock_connect):
+    mock_conn = MagicMock()
+    mock_cursor = MagicMock()
+
+    mock_connect.return_value = mock_conn
+    mock_conn.cursor.return_value = mock_cursor
+
+    mock_cursor.fetchall.return_value = []
+
+    result = get_all_visits()
+
+    assert result == []
 
 
 
@@ -65,9 +95,7 @@ def test_add_visit_handles_db_exception(mock_connect):
 
 
 # Unit tests for functions: get_visit_by_id (Tester: Shaheera)
-from db import get_visit_by_id
-from unittest.mock import patch, MagicMock
-from hamcrest import assert_that, equal_to
+
 
 # Test: get_visit_by_id should return visit dict when ID exists
 @patch("db.psycopg2.connect")

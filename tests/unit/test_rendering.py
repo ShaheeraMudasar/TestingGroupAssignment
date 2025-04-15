@@ -55,6 +55,10 @@ def test_format_visit_history(mock_start, mock_heading, mock_paragraph, mock_end
 
 
 
+
+
+
+
 # def format_visit_details(visit) (Detelina)
 
 

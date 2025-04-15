@@ -58,3 +58,17 @@ def test_hello_form_returns_html_form():
     expected_html_fragment = "<h1>Say Hello</h1>"
     assert_that(response.status_code, equal_to(200))
     assert_that(expected_html_fragment in response.get_data(as_text=True), equal_to(True))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
