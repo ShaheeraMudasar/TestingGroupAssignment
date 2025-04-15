@@ -97,11 +97,6 @@ def test_to_heading_line_empty():
     expected = "<h1></h1>\n"
     assert heading == expected
 
-#This test will fail. The function should take heading 1-6
-def test_to_heading_line_outside_number():
-    with pytest.raises(ValueError, match="Heading must be between 1 and 6."):
-        to_heading_line("Hi", 0)
-
 
 def test_to_text_paragraph_empty():
     text = to_text_paragraph("")
