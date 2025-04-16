@@ -1,29 +1,22 @@
 import pytest
 import re
-import os
-from main import app, root, visits, visit, hello, hello_form
+import json
 
-# Set environment variables for the test database (matching .env.test)
-os.environ["DB_HOST"] = "test_db"
-os.environ["DB_PORT"] = "5432"
-os.environ["DB_NAME"] = "postgres"
-os.environ["DB_USER"] = "postgres"
-os.environ["DB_PASSWORD"] = "password"
+# Integration test for "Add Visit Flow" (Tester: Mehdi):
 
+#Fixture to ensure the app is running and provide a requests session.
 @pytest.fixture
 def client():
-    """Fixture to provide a Flask test client and initialize the database."""
     # Configure the app for testing
+    from main import app
     app.config["TESTING"] = True
-    # Initialize the database
-    from db import init_db
-    init_db()
-    # Create a test client
+    # Use the test client without reinitializing the database
     with app.test_client() as client:
         yield client
 
+# (1) Test that a visit to / adds a record in the DB and it appears in /visits."
+
 def test_add_single_visit(client):
-    """Test that a visit to / adds a record and it appears in /visits."""
     # Step 1: Simulate a GET request to / to record a visit
     root_response = client.get("/", environ_base={"REMOTE_ADDR": "127.0.0.1", "HTTP_USER_AGENT": "test-agent"})
     assert root_response.status_code == 200, "Root endpoint failed"
@@ -38,10 +31,16 @@ def test_add_single_visit(client):
     visits_response = client.get("/visits")
     assert visits_response.status_code == 200, "/visits endpoint failed"
 
-    # Check for Visit #<id> in the response
+    # Parse JSON response and check for visit_id
     visits_text = visits_response.get_data(as_text=True)
-    assert f"Visit #{visit_id}" in visits_text, f"Visit #{visit_id} not found in /visits"
+    try:
+        visits_data = json.loads(visits_text)
+    except json.JSONDecodeError:
+        assert False, "Expected JSON response from /visits"
+    visit_ids = [visit["id"] for visit in visits_data]
+    assert visit_id in visit_ids, f"Visit ID {visit_id} not found in /visits"
 
+# (2) Test that multiple visits to / are recorded and all appear in /visits.
 def test_add_multiple_visits(client):
     """Test that multiple visits to / are recorded and all appear in /visits."""
     # Step 1: Simulate three GET requests to /
@@ -59,7 +58,12 @@ def test_add_multiple_visits(client):
     visits_response = client.get("/visits")
     assert visits_response.status_code == 200, "/visits endpoint failed"
 
-    # Verify all visit IDs appear in the response
+    # Parse JSON response and check for all visit_ids
     visits_text = visits_response.get_data(as_text=True)
+    try:
+        visits_data = json.loads(visits_text)
+    except json.JSONDecodeError:
+        assert False, "Expected JSON response from /visits"
+    found_visit_ids = [visit["id"] for visit in visits_data]
     for visit_id in visit_ids:
-        assert f"Visit #{visit_id}" in visits_text, f"Visit #{visit_id} not found in /visits"
+        assert visit_id in found_visit_ids, f"Visit ID {visit_id} not found in /visits"
