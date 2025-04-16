@@ -48,6 +48,7 @@ def test_format_visit_history(mock_start, mock_heading, mock_paragraph, mock_end
     assert_that(result, equal_to(expected))
 
 
+    
 # def format_visit_details(visit) (Detelina)
 
 @patch("rendering.get_html_end_block", return_value="End")
