@@ -1,11 +1,10 @@
 import unittest
 from unittest.mock import patch
-from hamcrest import assert_that, equal_to
+from hamcrest import assert_that, equal_to, contains_string
 import pytest
-import rendering
 from rendering import format_visit_history, format_hello_greeting, format_visit_details
 
-# Unit tests for functionde format_visit_history(history) (Mehdi)
+# Unit tests for functions format_visit_history(history) (Tester: Mehdi)
 
 # This function gets a list of visit dictionaries and formats them into an HTML string.
 # It uses helper functions to create the HTML structure:
@@ -49,7 +48,7 @@ def test_format_visit_history(mock_start, mock_heading, mock_paragraph, mock_end
 
 
     
-# def format_visit_details(visit) (Detelina)
+# Unit test for format_visit_details(visit) (Tester:Detelina)
 
 @patch("rendering.get_html_end_block", return_value="End")
 @patch("rendering.to_text_paragraph", return_value="Paragraph")
@@ -82,16 +81,17 @@ def test_format_visit_details_missing_data(mock_start, mock_heading, mock_paragr
     expected = "StartHeadingParagraphParagraphParagraphEnd"
     assert result == expected
 
-  
 
+# Unit tests for function format_hello_greeting(name) (Tester:Shaheera)
+def test_format_hello_greeting_with_name():
+    #GIVEN name is provided
+    html = format_hello_greeting("Alice")
+    #THEN
+    assert_that(html, contains_string("Hello, Alice!"))
 
+def test_format_hello_greeting_without_name():
+    #GIVEN name is not provided
+    html = format_hello_greeting("")
 
-
-
-
-
-
-
-
-
-#def format_hello_greeting(name) (Shaheera)
+    #THEN
+    assert_that(html, contains_string("Hello, mysterious visitor!"))
