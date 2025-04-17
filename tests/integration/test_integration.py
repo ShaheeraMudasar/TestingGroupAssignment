@@ -1,7 +1,7 @@
 import pytest
 import re
 import json
-
+from main import app
 # Integration test for "Add Visit Flow" (Tester: Mehdi):
 
 #Fixture to ensure the app is running and provide a requests session.
@@ -67,3 +67,24 @@ def test_add_multiple_visits(client):
     found_visit_ids = [visit["id"] for visit in visits_data]
     for visit_id in visit_ids:
         assert visit_id in found_visit_ids, f"Visit ID {visit_id} not found in /visits"
+
+
+
+#Detelina tests
+def test_hello_form_loads():
+    client = app.test_client()
+    response = client.get("/hello-form")
+
+    assert response.status_code == 200
+    assert "<form" in response.get_data(as_text=True)
+    assert 'name="name"' in response.get_data(as_text=True)
+
+
+def test_hello_query_greeting():
+    client = app.test_client()
+    response = client.get("/hello?name=Alice")
+
+    assert response.status_code == 200
+    assert "Hello, Alice" in response.get_data(as_text=True)
+
+    
