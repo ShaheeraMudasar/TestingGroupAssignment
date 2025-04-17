@@ -66,8 +66,11 @@ def test_add_multiple_visits(client):
         assert False, "Expected JSON response from /visits"
     found_visit_ids = [visit["id"] for visit in visits_data]
     for visit_id in visit_ids:
-        assert visit_id in found_visit_ids, f"Visit ID {visit_id} not found in /visits"from main import app
+        assert visit_id in found_visit_ids, f"Visit ID {visit_id} not found in /visits"
 
+
+
+#Detelina tests
 def test_hello_form_loads():
     client = app.test_client()
     response = client.get("/hello-form")
