@@ -16,18 +16,17 @@ def visits():
     from_param = request.args.get("from")
     to_param = request.args.get("to")
     history = get_all_visits()
-
     if from_param:
         try:
             from_dt = datetime.fromisoformat(from_param)
-            history = [v for v in history if v["timestamp"] >= from_dt]
+            history = [v for v in history if v["timestamp"].date() >= from_dt.date()]
         except ValueError:
             return to_error_message("Invalid 'from' date format. Use ISO format (YYYY-MM-DD)."), 400
 
     if to_param:
         try:
             to_dt = datetime.fromisoformat(to_param)
-            history = [v for v in history if v["timestamp"] <= to_dt]
+            history = [v for v in history if v["timestamp"].date() <= to_dt.date()]
         except ValueError:
             return to_error_message("Invalid 'to' date format. Use ISO format (YYYY-MM-DD)."), 400
 

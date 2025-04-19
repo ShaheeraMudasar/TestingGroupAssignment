@@ -1,5 +1,5 @@
 from main import app, root, visits, visit, hello, hello_form
-from hamcrest import assert_that, equal_to
+from hamcrest import assert_that, equal_to, contains_string
 from unittest.mock import patch
 from flask import Flask, request
 

@@ -1,14 +1,17 @@
 import pytest
 import re
-import json
+import json, html
 from main import app
+from hamcrest import assert_that, equal_to, contains_string
+from datetime import datetime
+
 # Integration test for "Add Visit Flow" (Tester: Mehdi):
 
 #Fixture to ensure the app is running and provide a requests session.
 @pytest.fixture
 def client():
     # Configure the app for testing
-    from main import app
+
     app.config["TESTING"] = True
     # Use the test client without reinitializing the database
     with app.test_client() as client:
@@ -87,4 +90,57 @@ def test_hello_query_greeting():
     assert response.status_code == 200
     assert "Hello, Alice" in response.get_data(as_text=True)
 
-    
+# Integration tests for the routes /visits and visits/<id> (Tester: Shaheera)
+
+def test_visits_without_parameters_should_return_all_visits(client):
+   
+    response = client.get("/visits")
+
+    assert_that(response.status_code, equal_to(200))
+
+#Test case: If a range of date is provided, it should display the results only within that range
+def test_visits_with_valid_dates_should_return_visits_in_that_range(client):
+    # Simulate visit
+    client.get("/", environ_base={
+        "REMOTE_ADDR": "127.0.0.2",
+        "HTTP_USER_AGENT": "filter-test-user"
+    })
+
+    # Date filter (today)
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    # GIVEN /visits is called 
+    # WHEN a range of date is provided 
+    response = client.get(f"/visits?from={today}&to={today}")
+    assert_that(response.status_code, equal_to(200))
+
+    # Parse response
+    visits_data = json.loads(response.get_data(as_text=True))
+    print("\n==== VISITS DATA ====\n", visits_data)
+
+    # THEN visits within the range should be shown
+    found = any("filter-test-user" in visit["user_agent"] for visit in visits_data)
+    assert found, "Expected 'filter-test-user' in the visits list"
+
+
+def test_visits_with_invalid_from_date_should_return_404(client):
+
+    # GIVEN /visits is called
+    # WHEN an invalid from date is provided
+    response = client.get("/visits?from=not-a-date")
+    decoded = html.unescape(response.get_data(as_text=True))
+
+    # THEN it should return a 404 with an error message
+    assert_that(response.status_code, equal_to(400))
+    assert_that(decoded, contains_string("Invalid 'from' date format"))
+
+def test_visits_with_invalid_to_date_should_return_404(client):
+  
+     # GIVEN /visits is called
+    # WHEN an invalid from date is provided
+    response = client.get("/visits?to=not-a-date")
+    decoded = html.unescape(response.get_data(as_text=True))
+
+    # THEN it should return a 404 with an error message
+    assert_that(response.status_code, equal_to(400))
+    assert_that(decoded, contains_string("Invalid 'to' date format"))
