@@ -3,10 +3,12 @@ All tests (unit, integration, and system) can be executed using the provided aut
 
 🪟 **For Windows users**
 ``` sh 
+   cd tests
    run-all-tests.bat
 ```
 🍎 **For MacOS / Linux users**
 ```sh 
+   cd tests
    ./run-all-tests.sh
 ```
 🧪 **What the script does:**
