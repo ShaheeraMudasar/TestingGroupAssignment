@@ -34,7 +34,7 @@ if %ERRORLEVEL%==0 (
 
 :: Set environment variable and start docker compose
 set APP_PORT=%APP_PORT%
-docker compose up --build
+docker compose up --build -d
 
 if errorlevel 1 (
     echo.

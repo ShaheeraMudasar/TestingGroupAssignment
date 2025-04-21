@@ -2,12 +2,10 @@
 All tests (unit, integration, and system) can be executed using the provided automation scripts.
 
 🪟 **For Windows users**
-Run:
 ``` sh 
    run-all-tests.bat
 ```
 🍎 **For MacOS / Linux users**
-Run:
 ```sh 
    ./run-all-tests.sh
 ```

@@ -1,0 +1,32 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env
+
+# Environment files
+.env.*
+!env/.env.test  # if you want to include test env only
+
+# Python test cache
+.pytest_cache/
+coverage/
+htmlcov/
+.coverage
+# IDE files
+.vscode/
+.idea/
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker itself
+docker-compose.override.yml
